@@ -5,7 +5,7 @@ const previousNum = document.querySelector('.previousNum');
 const currentNum = document.querySelector('.currentNum');
 const clear = document.querySelector('.clear');
 const plusminus = document.querySelector('.plusminus');
-const percentage = document.querySelector('.percentage');
+const back = document.querySelector('.back');
 const division = document.querySelector('.division');
 const multiplication = document.querySelector('.multiplication');
 const subtraction = document.querySelector('.subtraction');
@@ -132,8 +132,9 @@ multiplication.addEventListener('click', e => {
 	e.target.style.background = 'red';
 	operatorJob('*');
 })
-percentage.addEventListener('click', () => {
-	console.log('ciaone!');
+back.addEventListener('click', () => {
+	operandA = operandA.slice(0,-1);;
+	currentNum.innerText = operandA;
 })
 decimal.addEventListener('click', () => {
 	if (!operandA.includes('.')) operandA += '.';
