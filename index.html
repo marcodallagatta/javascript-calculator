@@ -10,22 +10,32 @@
 <body>
 	<div id="container">
 		<div id="calculator">
-			<div class="display">1234567890</div>
-			<div class="number">1</div>
-			<div class="number">2</div>
-			<div class="number">3</div>
-			<div class="number">4</div>
-			<div class="number">5</div>
-			<div class="number">6</div>
-			<div class="number">7</div>
-			<div class="number">8</div>
-			<div class="number">9</div>
-			<div class="number">0</div>
-			<div class="operators">+</div>
-			<div class="operators">−</div>
-			<div class="operators">÷</div>
-			<div class="operators">x</div>
-			<div class="operators">=</div>
+			<!-- decided to arrange the items in the
+			output order already in HTML, to avoid having so many lines of code in CSS, since it's
+			a small project -->
+			<div class="display">
+				<p class="previousNum">00000</p>
+				<p class="currentNum">12345</p>
+			</div>
+			<button class="clear">C</button>
+			<button class="operator plusminus">+/−</button>
+			<button class="operator percentage">%</button>
+			<button class="operator division">÷</button>
+			<button class="number seven">7</button>
+			<button class="number eight">8</button>
+			<button class="number nine">9</button>
+			<button class="operator multiplication">*</button>
+			<button class="number four">4</button>
+			<button class="number five">5</button>
+			<button class="number six">6</button>
+			<button class="operator subtraction">−</button>
+			<button class="number one">1</button>
+			<button class="number two">2</button>
+			<button class="number three">3</button>
+			<button class="operator addition">+</button>
+			<button class="number decimal">.</button>
+			<button class="number zero">0</button>
+			<button class="operator equal">=</button>
 		</div>
 	</div>
 
