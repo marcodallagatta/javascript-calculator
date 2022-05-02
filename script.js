@@ -30,7 +30,7 @@ function operator(calledOperator, a, b) {
 	if (calledOperator === '*') {
 		return a * b;
 	}
-	if (calledOperator === '/') {
+	if (calledOperator === '÷') {
 		return a / b;
 	}
 }
@@ -60,6 +60,7 @@ const pressNum = (e) => {
 }
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
 const operatorJob = (nextOp) => {
+	console.log(operandA + operandB + result);
 	if (!operandA || !operandB) { // if even one is empty
 		operandB = operandA;
 		if (result === '') {
