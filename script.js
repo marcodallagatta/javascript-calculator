@@ -78,11 +78,14 @@ const operatorJob = (nextOp) => {
 		operandA = '';
 		operandB = result;
 	}
-	if (nextOp === '=') {
-		currentNum.innerText = result.substring(0,11);
-	}
 	previousNum.innerText += ` ${nextOp}`;
 	calledOperator = nextOp;
+	if (nextOp === '=') {
+		// currentNum.innerText = result.substring(0,11);
+		calledOperator = '';
+		previousNum.innerHTML = "<span style='opacity:0'>0</span>";
+		currentNum.innerText = result;
+	}
 }
 
 // * Event Listeners
@@ -91,7 +94,6 @@ clear.addEventListener('click', () => clearAll())
 equal.addEventListener('click', () => {
 	clearOperators();
 	operatorJob('=');
-	previousNum.innerHTML = "<span style='opacity:0'>0</span>";
 })
 allOperators.forEach(item => {
 	item.addEventListener('click', e => {
