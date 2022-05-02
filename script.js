@@ -72,7 +72,7 @@ const operatorJob = (nextOp) => {
 		}
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 	} else { // if A and B are both filled
-		result = operator(calledOperator, operandB, operandA).toFixed(2);
+		result = operator(calledOperator, operandB, operandA);
 		previousNum.innerText = result;
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
@@ -96,7 +96,7 @@ equal.addEventListener('click', () => {
 allOperators.forEach(item => {
 	item.addEventListener('click', e => {
 		clearOperators();
-		e.target.style.background = 'red';
+		e.target.style.background = '#f74738';
 		operatorJob(e.target.innerText);
 	})
 })
@@ -112,7 +112,6 @@ plusminus.addEventListener('click', () => {
 	operandA = -operandA;
 	currentNum.innerText = operandA;
 })
-// Keyboards use
 document.addEventListener('keydown', (e) => {
 	if (e.key >= 0 || e.key <= 9) pressNum(e);
 	if (e.key === '.' && !operandA.includes('.')) decimal.click();
