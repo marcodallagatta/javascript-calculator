@@ -37,8 +37,8 @@ function operator(calledOperator, a, b) {
 
 // returns to original state
 function clearAll() {
-	previousNum.innerText = '';
-	currentNum.innerText = '';
+	previousNum.innerText = '<span style="opacity:.5">0000</span>';
+	currentNum.innerText = '<span style="opacity:.5">1234</span>';
 	operandA = '';
 	operandB = '';
 	result = '';
