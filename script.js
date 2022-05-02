@@ -38,6 +38,7 @@ const clearAll = () => {
 	operandB = '';
 	calledOperator = '';
 	clearOperators();
+	console.clear();
 }
 // clears background color of operators
 const clearOperators = () => {
@@ -45,33 +46,52 @@ const clearOperators = () => {
 		op.style.background = '';
 	});
 };
+
+
+function calledOperatorTransl(calledOperator) {
+	console.log(`calledOperator is\n${calledOperator}`);
+	if (calledOperator === '+') return add;
+	if (calledOperator === '−') return subtract;
+	if (calledOperator === '*') return multiply;
+	if (calledOperator === '/') return divide;
+}
+
+
 // what happens when a number is clicked
 const pressNum = (e) => {
-	operandA += Number(e.target.innerText);
+	operandA += e.target.innerText; // ALWAYS ADDS TO operandA
 	currentNum.innerText = operandA;
-	// if (operandA && operandB && !result) {
-	// 	operatorJob(e, calledOperator);
-	// 	giveMeConsole('calling if in pressednum');
-	// } else {
-	// 	giveMeConsole('pressed num without if in pressednum');
-	// }
+	giveMeConsole('pressednum');
+	if (operandA && operandB) {
+		operatorJob(e, calledOperatorTransl(calledOperator));
+		giveMeConsole('pressednum with all variables');
+	} else {
+		// giveMeConsole('pressed num without if in pressednum');
+	}
 }
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
 const operatorJob = (e, operation) => {
-	clearOperators();
-	e.target.style.background = 'red';
-	if (!result) {
-		if (!operandA || !operandB ) { // if either one is empty
+	// clearOperators();
+	// e.target.style.background = 'red';
+	if (!operandA || !operandB) { // if either one is empty
+		operandB = operandA;
+		if (result === '') {
+			previousNum.innerText = operandB;
 			operandB = operandA;
 			operandA = '';
-			giveMeConsole('empty inputs');
-		} else { // if A and B are both filled
-			result = operation(operandB, operandA);
-			previousNum.innerText = operandA;
-			operandA = '';
-			operandB = '';
-			giveMeConsole('present inputs');
+		} else {
+			previousNum.innerText = result;
+			operandB = result;
 		}
+		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
+		result = '';
+		giveMeConsole('!operandA || !operandB');
+	} else { // if A and B are both filled
+		result = operation(operandB, operandA);
+		// previousNum.innerText = operandA;
+		operandA = '';
+		operandB = result;
+		giveMeConsole('else of !operandA || !operandB');
 	}
 	if (previousNum.innerText.match(/\D/)) {
 		previousNum.innerText = previousNum.innerText.slice(0,-2);
@@ -80,23 +100,16 @@ const operatorJob = (e, operation) => {
 }
 
 function giveMeConsole(msg = '') {
-	let output;
-	if (msg) {output = msg + '\n';}
-	output += `operandA: ${operandA}
-		\ninputB: ${operandB}
-		\nresult: ${result}
-		\ncalledOperation: ${calledOperator}`;
+	let hours = (new Date()).getHours();
+	let minutes = (new Date()).getMinutes();
+	let seconds = (new Date()).getSeconds();
+	let output = `${hours}:${minutes}:${seconds}\n`;
+	if (msg) {output += `${msg}\n`};
+	output += `operandA: ${operandA}\noperandB: ${operandB}\nresult: ${result}\ncalledOperator: ${calledOperator}`;
 	console.log(output);
 }
 
 // * Event Listeners
-equal.addEventListener('click', e => {
-	if (calledOperator) {
-		operatorJob(e, calledOperator);
-		calledOperator = '';
-		clearOperators();
-	}
-})
 allNumbers.forEach( e => {
 	e.addEventListener('click', e => {
 		pressNum(e);
@@ -113,32 +126,3 @@ subtraction.addEventListener('click', e => {
 	calledOperator = '−';
 	operatorJob(e, subtract);
 })
-
-
-
-
-
-
-
-
-
-
-// division.addEventListener('click', e => {
-// 	operatorJob(e, divide);
-// })
-// multiplication.addEventListener('click', e => {
-// 	operatorJob(e, multiply);
-// })
-// // TODO
-// percentage.addEventListener('click', e => {
-// 	console.log('ciaone!');
-// })
-// decimal.addEventListener('click', e => {
-// 	console.log('ciao');
-// })
-// // ! in alcuni casi diventa zero
-// plusminus.addEventListener('click', () => {
-// 	operandA = -operandA;
-// 	display.innerText = operandA;
-// 	console.log(`operandA: ${operandA}, operandB: ${operandB}`);
-// })
