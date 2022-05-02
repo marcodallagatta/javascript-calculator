@@ -55,7 +55,8 @@ const clearOperators = () => {
 
 // what happens when a number is clicked
 const pressNum = (e) => {
-	operandA += e.target.innerText; // ALWAYS ADDS TO operandA
+	// ALWAYS ADDS TO operandA
+	e.type === 'keydown' ? operandA += e.key : operandA += e.target.innerText;
 	if (operandA.length < 10) currentNum.innerText = operandA;
 	giveMeConsole('pressednum');
 }
@@ -111,6 +112,7 @@ clear.addEventListener('click', () => {
 equal.addEventListener('click', () => {
 	clearOperators();
 	operatorJob('=');
+	previousNum.innerHTML = "<span style='opacity:0'>0</span>";
 })
 addition.addEventListener('click', e => {
 	clearOperators();
@@ -144,3 +146,15 @@ plusminus.addEventListener('click', () => {
 	operandA = -operandA;
 	currentNum.innerText = operandA;
 })
+// Keyboards use
+document.addEventListener('keydown', (e) => {
+	console.log(e);
+	if (e.key >= 0 || e.key <= 9) pressNum(e);
+	if (e.key === '.' && !operandA.includes('.')) decimal.click();
+	if (e.key === 'Backspace') back.click();
+	if (e.key === '+') addition.click();
+	if (e.key === '-') subtraction.click();
+	if (e.key === '/') division.click();
+	if (e.key === '*') multiplication.click();
+	if (e.key === 'Enter') equal.click();
+});
