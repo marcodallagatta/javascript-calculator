@@ -1,3 +1,5 @@
+// TODO from second input of number, it doesn't go over one digit (impossible to write 20, it writes 2 then 0)
+
 // * initialization
 const previousNum = document.querySelector('.previousNum');
 const currentNum = document.querySelector('.currentNum');
@@ -46,8 +48,6 @@ const clearOperators = () => {
 		op.style.background = '';
 	});
 };
-
-
 function calledOperatorTransl(calledOperator) {
 	console.log(`calledOperator is\n${calledOperator}`);
 	if (calledOperator === '+') return add;
@@ -55,25 +55,15 @@ function calledOperatorTransl(calledOperator) {
 	if (calledOperator === '*') return multiply;
 	if (calledOperator === '/') return divide;
 }
-
-
 // what happens when a number is clicked
 const pressNum = (e) => {
 	operandA += e.target.innerText; // ALWAYS ADDS TO operandA
 	currentNum.innerText = operandA;
 	giveMeConsole('pressednum');
-	if (operandA && operandB) {
-		operatorJob(e, calledOperatorTransl(calledOperator));
-		giveMeConsole('pressednum with all variables');
-	} else {
-		// giveMeConsole('pressed num without if in pressednum');
-	}
 }
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
-const operatorJob = (e, operation) => {
-	// clearOperators();
-	// e.target.style.background = 'red';
-	if (!operandA || !operandB) { // if either one is empty
+const operatorJob = (e, operation, nextOp) => {
+	if (!operandA || !operandB) { // if even one is empty
 		operandB = operandA;
 		if (result === '') {
 			previousNum.innerText = operandB;
@@ -88,7 +78,8 @@ const operatorJob = (e, operation) => {
 		giveMeConsole('!operandA || !operandB');
 	} else { // if A and B are both filled
 		result = operation(operandB, operandA);
-		// previousNum.innerText = operandA;
+		previousNum.innerText = result;
+		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
 		operandB = result;
 		giveMeConsole('else of !operandA || !operandB');
@@ -96,7 +87,8 @@ const operatorJob = (e, operation) => {
 	if (previousNum.innerText.match(/\D/)) {
 		previousNum.innerText = previousNum.innerText.slice(0,-2);
 	}
-	previousNum.innerText += ` ${calledOperator}`
+	previousNum.innerText += ` ${nextOp}`;
+	calledOperator = nextOp;
 }
 
 function giveMeConsole(msg = '') {
@@ -119,10 +111,12 @@ clear.addEventListener('click', e => {
 	clearAll();
 })
 addition.addEventListener('click', e => {
-	calledOperator = '+';
-	operatorJob(e, add);
+	clearOperators();
+	e.target.style.background = 'red';
+	operatorJob(e, add, '+');
 })
 subtraction.addEventListener('click', e => {
-	calledOperator = '−';
-	operatorJob(e, subtract);
+	clearOperators();
+	e.target.style.background = 'red';
+	operatorJob(e, subtract, '−');
 })
