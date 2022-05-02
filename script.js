@@ -21,7 +21,6 @@ let calledOperator = '';
 
 // * mathematical functions
 function calledOperatorTransl(calledOperator, a, b) {
-	console.log(`calledOperator is\n${calledOperator} for ${a} and ${b}`);
 	if (calledOperator === '+') {
 		return Number(a) + Number(b);
 	}
@@ -42,6 +41,7 @@ const clearAll = () => {
 	currentNum.innerText = '';
 	operandA = '';
 	operandB = '';
+	result = '';
 	calledOperator = '';
 	clearOperators();
 	console.clear();
@@ -69,8 +69,8 @@ const operatorJob = (nextOp) => {
 			operandA = '';
 		} else {
 			previousNum.innerText = result;
+			console.log(result);
 			operandB = result;
-			// result = '';
 		}
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		giveMeConsole('!operandA || !operandB');
@@ -81,9 +81,6 @@ const operatorJob = (nextOp) => {
 		operandA = '';
 		operandB = result;
 		giveMeConsole('else of !operandA || !operandB');
-	}
-	if (previousNum.innerText.match(/\D/)) {
-		previousNum.innerText = previousNum.innerText.slice(0,-2);
 	}
 	previousNum.innerText += ` ${nextOp}`;
 	calledOperator = nextOp;
@@ -105,15 +102,12 @@ allNumbers.forEach( e => {
 		pressNum(e);
 	})
 })
-clear.addEventListener('click', e => {
+clear.addEventListener('click', () => {
 	clearAll();
 })
-equal.addEventListener('click', e => {
-	if (result) {
-		operatorJob(e, calledOperator);
-		calledOperator = '';
-		clearOperators();
-	}
+equal.addEventListener('click', () => {
+	clearOperators();
+	operatorJob('=');
 })
 addition.addEventListener('click', e => {
 	clearOperators();
@@ -135,16 +129,14 @@ multiplication.addEventListener('click', e => {
 	e.target.style.background = 'red';
 	operatorJob('*');
 })
-// TODO
-percentage.addEventListener('click', e => {
+percentage.addEventListener('click', () => {
 	console.log('ciaone!');
 })
-decimal.addEventListener('click', e => {
-	console.log('ciao');
+decimal.addEventListener('click', () => {
+	if (!operandA.includes('.')) operandA += '.';
+	currentNum.innerText = operandA;
 })
-// ! in alcuni casi diventa zero
 plusminus.addEventListener('click', () => {
 	operandA = -operandA;
-	display.innerText = operandA;
-	console.log(`operandA: ${operandA}, operandB: ${operandB}`);
+	currentNum.innerText = operandA;
 })
