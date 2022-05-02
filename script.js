@@ -20,18 +20,22 @@ let result = '';
 let calledOperator = '';
 
 // * mathematical functions
-function add(a, b) {
-	return Number(a) + Number(b);
+function calledOperatorTransl(calledOperator, a, b) {
+	console.log(`calledOperator is\n${calledOperator} for ${a} and ${b}`);
+	if (calledOperator === '+') {
+		return Number(a) + Number(b);
+	}
+	if (calledOperator === '−' || calledOperator === '-') {
+		return a - b;
+	}
+	if (calledOperator === '*') {
+		return a * b;
+	}
+	if (calledOperator === '/') {
+		return a / b;
+	}
 }
-function subtract(a, b) {
-	return a - b;
-}
-function multiply(a, b) {
-	return a * b;
-}
-function divide(a, b) {
-	return a / b;
-}
+
 // returns to original state
 const clearAll = () => {
 	previousNum.innerText = '';
@@ -48,13 +52,7 @@ const clearOperators = () => {
 		op.style.background = '';
 	});
 };
-function calledOperatorTransl(calledOperator) {
-	console.log(`calledOperator is\n${calledOperator}`);
-	if (calledOperator === '+') return add;
-	if (calledOperator === '−') return subtract;
-	if (calledOperator === '*') return multiply;
-	if (calledOperator === '/') return divide;
-}
+
 // what happens when a number is clicked
 const pressNum = (e) => {
 	operandA += e.target.innerText; // ALWAYS ADDS TO operandA
@@ -62,7 +60,7 @@ const pressNum = (e) => {
 	giveMeConsole('pressednum');
 }
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
-const operatorJob = (e, operation, nextOp) => {
+const operatorJob = (nextOp) => {
 	if (!operandA || !operandB) { // if even one is empty
 		operandB = operandA;
 		if (result === '') {
@@ -72,12 +70,12 @@ const operatorJob = (e, operation, nextOp) => {
 		} else {
 			previousNum.innerText = result;
 			operandB = result;
+			// result = '';
 		}
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
-		result = '';
 		giveMeConsole('!operandA || !operandB');
 	} else { // if A and B are both filled
-		result = operation(operandB, operandA);
+		result = calledOperatorTransl(calledOperator, operandB, operandA);
 		previousNum.innerText = result;
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
@@ -110,13 +108,43 @@ allNumbers.forEach( e => {
 clear.addEventListener('click', e => {
 	clearAll();
 })
+equal.addEventListener('click', e => {
+	if (result) {
+		operatorJob(e, calledOperator);
+		calledOperator = '';
+		clearOperators();
+	}
+})
 addition.addEventListener('click', e => {
 	clearOperators();
 	e.target.style.background = 'red';
-	operatorJob(e, add, '+');
+	operatorJob('+');
 })
 subtraction.addEventListener('click', e => {
 	clearOperators();
 	e.target.style.background = 'red';
-	operatorJob(e, subtract, '−');
+	operatorJob('−');
+})
+division.addEventListener('click', e => {
+	clearOperators();
+	e.target.style.background = 'red';
+	operatorJob('/');
+})
+multiplication.addEventListener('click', e => {
+	clearOperators();
+	e.target.style.background = 'red';
+	operatorJob('*');
+})
+// TODO
+percentage.addEventListener('click', e => {
+	console.log('ciaone!');
+})
+decimal.addEventListener('click', e => {
+	console.log('ciao');
+})
+// ! in alcuni casi diventa zero
+plusminus.addEventListener('click', () => {
+	operandA = -operandA;
+	display.innerText = operandA;
+	console.log(`operandA: ${operandA}, operandB: ${operandB}`);
 })
