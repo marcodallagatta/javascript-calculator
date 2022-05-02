@@ -36,7 +36,7 @@ function calledOperatorTransl(calledOperator, a, b) {
 }
 
 // returns to original state
-const clearAll = () => {
+function clearAll() {
 	previousNum.innerText = '';
 	currentNum.innerText = '';
 	operandA = '';
@@ -56,7 +56,7 @@ const clearOperators = () => {
 // what happens when a number is clicked
 const pressNum = (e) => {
 	operandA += e.target.innerText; // ALWAYS ADDS TO operandA
-	currentNum.innerText = operandA;
+	if (operandA.length < 10) currentNum.innerText = operandA;
 	giveMeConsole('pressednum');
 }
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
@@ -75,12 +75,15 @@ const operatorJob = (nextOp) => {
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		giveMeConsole('!operandA || !operandB');
 	} else { // if A and B are both filled
-		result = calledOperatorTransl(calledOperator, operandB, operandA);
+		result = calledOperatorTransl(calledOperator, operandB, operandA).toFixed(2);
 		previousNum.innerText = result;
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
 		operandB = result;
 		giveMeConsole('else of !operandA || !operandB');
+	}
+	if (nextOp === '=') {
+		currentNum.innerText = result.substring(0,11);
 	}
 	previousNum.innerText += ` ${nextOp}`;
 	calledOperator = nextOp;
