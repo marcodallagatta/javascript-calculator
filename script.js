@@ -18,23 +18,6 @@ let operandA = '';
 let operandB = '';
 let result = '';
 let calledOperator = '';
-
-// * mathematical functions
-function operator(calledOperator, a, b) {
-	if (calledOperator === '+') {
-		return Number(a) + Number(b);
-	}
-	if (calledOperator === '−' || calledOperator === '-') {
-		return a - b;
-	}
-	if (calledOperator === '*') {
-		return a * b;
-	}
-	if (calledOperator === '÷') {
-		return a / b;
-	}
-}
-
 // returns to original state
 function clearAll() {
 	previousNum.innerHTML = '<span style="opacity:.5">0000</span>';
@@ -51,12 +34,33 @@ const clearOperators = () => {
 		op.style.background = '';
 	});
 };
-
 // what happens when a number is clicked
 const pressNum = (e) => {
-	// ALWAYS ADDS TO operandA
+	// the function ALWAYS ADDS TO operandA
 	e.type === 'keydown' ? operandA += e.key : operandA += e.target.innerText;
 	if (operandA.length < 10) currentNum.innerText = operandA;
+}
+
+// * mathematical functions
+function operator(calledOperator, a, b) {
+	if (calledOperator === '+') {
+		return Number(a) + Number(b);
+	}
+	if (calledOperator === '−' || calledOperator === '-') {
+		return a - b;
+	}
+	if (calledOperator === '*') {
+		return a * b;
+	}
+	if (calledOperator === '÷') {
+		return a / b;
+	}
+}
+// truncates long decimals and fixes the 0.1 + 0.2 drama llama
+function truncateDecimals(num) {
+	if (!Number.isInteger(num)) {
+		return num.toFixed(2)
+	};
 }
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
 const operatorJob = (nextOp) => {
@@ -73,7 +77,7 @@ const operatorJob = (nextOp) => {
 		}
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 	} else { // if A and B are both filled
-		result = operator(calledOperator, operandB, operandA);
+		result = truncateDecimals(operator(calledOperator, operandB, operandA));
 		previousNum.innerText = result;
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
