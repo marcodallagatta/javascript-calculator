@@ -56,12 +56,6 @@ function operator(calledOperator, a, b) {
 		return a / b;
 	}
 }
-// truncates long decimals and fixes the 0.1 + 0.2 drama llama
-function truncateDecimals(num) {
-	if (!Number.isInteger(num)) {
-		return num.toFixed(2)
-	};
-}
 // the function that the event callers call to actually invoke the mathematical functions and manage the flow of the calculator
 const operatorJob = (nextOp) => {
 	console.log(operandA + operandB + result);
@@ -77,7 +71,9 @@ const operatorJob = (nextOp) => {
 		}
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 	} else { // if A and B are both filled
-		result = truncateDecimals(operator(calledOperator, operandB, operandA));
+		result = operator(calledOperator, operandB, operandA);
+		// truncates long decimals and fixes the 0.1 + 0.2 drama llama
+		if (!Number.isInteger(result)) { result = Number(result).toFixed(2) };
 		previousNum.innerText = result;
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
@@ -122,10 +118,10 @@ plusminus.addEventListener('click', () => {
 document.addEventListener('keydown', (e) => {
 	if (e.key >= 0 || e.key <= 9) pressNum(e);
 	if (e.key === '.' && !operandA.includes('.')) decimal.click();
-	if (e.key === 'Backspace') back.click();
+	if (e.key === 'backspace') back.click();
 	if (e.key === '+') addition.click();
 	if (e.key === '-') subtraction.click();
 	if (e.key === '/') division.click();
 	if (e.key === '*') multiplication.click();
-	if (e.key === 'Enter') equal.click();
+	if (e.key === 'enter' || e.key === '=') equal.click();
 });
