@@ -73,7 +73,9 @@ const operatorJob = (nextOp) => {
 	} else { // if A and B are both filled
 		result = operator(calledOperator, operandB, operandA);
 		// truncates long decimals and fixes the 0.1 + 0.2 drama llama
-		if (!Number.isInteger(result)) { result = Number(result).toFixed(2) };
+		if (!Number.isInteger(result)) {
+			result = result.toFixed(2).replace(/(\.0+|0+)$/, '');
+		};
 		previousNum.innerText = result;
 		currentNum.innerHTML = "<span style='opacity:.5'>0</span>";
 		operandA = '';
@@ -112,8 +114,10 @@ decimal.addEventListener('click', () => {
 	currentNum.innerText = operandA;
 })
 plusminus.addEventListener('click', () => {
-	operandA = -operandA;
-	currentNum.innerText = operandA;
+	if (operandA) {
+		operandA = -operandA;
+		currentNum.innerText = operandA;
+	}
 })
 document.addEventListener('keydown', (e) => {
 	if (e.key >= 0 || e.key <= 9) pressNum(e);
